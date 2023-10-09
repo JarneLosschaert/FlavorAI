@@ -89,11 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Flexible(
             flex: 1,
-            child: LargeHomeScreenCard(),
+            child: LargeHomeScreenCard(text: "Recipes", subText: "You have saved 0 recipes",),
           ),
           Flexible(
             flex: 1,
-            child: LargeHomeScreenCard(),
+            child: LargeHomeScreenCard(text: "Refrigerator"),
           ),
           Flexible(
             flex: 1,
@@ -116,8 +116,11 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 
-class LargeHomeScreenCard extends StatelessWidget {
-  const LargeHomeScreenCard({super.key});
+class LargeHomeScreenCard extends StatelessWidget {  // todo: combine with SmallHomeScreenCard
+  final String text;
+  final String? subText;
+
+  const LargeHomeScreenCard({super.key, required this.text, this.subText});
 
   @override
   Widget build(BuildContext context) {
@@ -125,15 +128,36 @@ class LargeHomeScreenCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
         color: Colors.grey,
       ),
-      child: const Center(
-        child: Text(
-          'Card',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-          ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: const TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+              ),
+            ),
+            if (subText != null)
+              Text(
+                subText!,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -149,7 +173,15 @@ class SmallHomeScreenCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Color.fromARGB(255, 66, 66, 66),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+        color: const Color.fromARGB(255, 66, 66, 66),
       ),
       child: const Center(
         child: Text(
