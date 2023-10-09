@@ -89,24 +89,37 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Flexible(
             flex: 1,
-            child: LargeHomeScreenCard(text: "Recipes", subText: "You have saved 0 recipes",),
+            child: HomeScreenCard(
+                text: "Recipes",
+                subText: "You have saved 0 recipes",
+                backgroundColor: Colors.grey
+              ),
           ),
           Flexible(
             flex: 1,
-            child: LargeHomeScreenCard(text: "Refrigerator"),
+            child: HomeScreenCard(
+                text: "Refrigerator",
+                backgroundColor: Colors.grey
+              ),
           ),
           Flexible(
             flex: 1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-              Expanded(
-                child: AspectRatio(aspectRatio: 1, child: SmallHomeScreenCard()),
-              ),
-              Expanded(
-                child: AspectRatio(aspectRatio: 1, child: SmallHomeScreenCard()),
-              ),
-            ],
+                Expanded(
+                  child:
+                      AspectRatio(aspectRatio: 1, child: HomeScreenCard(
+                        text: "3 free scans", backgroundColor: Color.fromARGB(255, 66, 66, 66),
+                      )),
+                ),
+                Expanded(
+                  child:
+                      AspectRatio(aspectRatio: 1, child: HomeScreenCard(
+                        text: "Buy Premium", backgroundColor: Color.fromARGB(255, 66, 66, 66),
+                      )),
+                ),
+              ],
             ),
           )
         ],
@@ -115,17 +128,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-class LargeHomeScreenCard extends StatelessWidget {  // todo: combine with SmallHomeScreenCard
+class HomeScreenCard extends StatelessWidget {
   final String text;
   final String? subText;
+  final Color backgroundColor;
 
-  const LargeHomeScreenCard({super.key, required this.text, this.subText});
+  const HomeScreenCard(
+      {
+        super.key,
+        required this.text,
+        this.subText,
+        required this.backgroundColor,
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
@@ -136,7 +156,7 @@ class LargeHomeScreenCard extends StatelessWidget {  // todo: combine with Small
             offset: const Offset(0, 2),
           ),
         ],
-        color: Colors.grey,
+        color: backgroundColor,
       ),
       child: Center(
         child: Column(
@@ -148,6 +168,7 @@ class LargeHomeScreenCard extends StatelessWidget {  // todo: combine with Small
                 fontSize: 24,
                 color: Colors.white,
               ),
+              textAlign: TextAlign.center,
             ),
             if (subText != null)
               Text(
@@ -156,42 +177,11 @@ class LargeHomeScreenCard extends StatelessWidget {  // todo: combine with Small
                   fontSize: 16,
                   color: Colors.white,
                 ),
+                textAlign: TextAlign.center,
               ),
           ],
         ),
       ),
-    );
-  }
-}
-  
-class SmallHomeScreenCard extends StatelessWidget {
-  const SmallHomeScreenCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-        color: const Color.fromARGB(255, 66, 66, 66),
-      ),
-      child: const Center(
-        child: Text(
-          'Card',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-          ),
-        ),
-      )
     );
   }
 }
