@@ -1,7 +1,10 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key, required this.camera});
@@ -15,6 +18,8 @@ class ScannerScreen extends StatefulWidget {
 class _ScannerScreenState extends State<ScannerScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  bool _isScanning = false;
+  Timer? _scanTimer;
 
   @override
   void initState() {
@@ -32,8 +37,44 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _scanTimer?.cancel(); // Cancel the timer when disposing the widget.
     super.dispose();
   }
+
+  void _toggleScanning() {
+    setState(() {
+      _isScanning = !_isScanning;
+      if (_isScanning) {
+        _startScanning();
+      } else {
+        _stopScanning();
+      }
+    });
+  }
+
+  void _startScanning() {
+    _scanTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      _takePicture();
+    });
+  }
+
+  void _stopScanning() {
+    _scanTimer?.cancel();
+  }
+
+  Future<void> _takePicture() async {
+  try {
+    await _initializeControllerFuture;
+    final image = await _controller.takePicture();
+
+    debugPrint('ScannerScreen._takePicture: ${image.path}');
+
+    // fetch to azure custom vision api
+
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -61,23 +102,17 @@ class _ScannerScreenState extends State<ScannerScreen> {
             left: 0,
             right: 0,
             child: Center(
-                child: IconButton(
-              onPressed: () async {
-                try {
-                  await _initializeControllerFuture;
-                  final image = await _controller.takePicture();
-                } catch (e) {
-                  debugPrint(e.toString());
-                }
-              },
-              icon: Icon(
-                Icons.lens_outlined,
-                size: 96,
-                color: Colors.white.withOpacity(0.8),
+              child: IconButton(
+                onPressed: _toggleScanning,
+                icon: Icon(
+                  _isScanning ? Icons.radio_button_checked_rounded : Icons.circle_outlined,
+                  size: 96,
+                  color: _isScanning ? Colors.red : Colors.white,
+                ),
+                padding: const EdgeInsets.all(12), // Adjust the padding as needed
+                tooltip: _isScanning ? 'Stop scanning' : 'Start scanning',
               ),
-              padding: const EdgeInsets.all(12), // Adjust the padding as needed
-              tooltip: 'Start scanning', // Add a tooltip if desired
-            )),
+            ),
           ),
         ],
       ),
