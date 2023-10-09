@@ -1,11 +1,18 @@
+import 'package:camera/camera.dart';
+import 'package:flavor_ai_testing/ScannerScreen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
+  runApp(MyApp(camera: firstCamera));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.camera});
+
+  final CameraDescription camera;
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +22,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Main(),
+      home: Main(camera: camera),
     );
   }
 }
 
 class Main extends StatefulWidget {
-  const Main({super.key});
+  const Main({super.key, required this.camera});
+
+  final CameraDescription camera;
 
   @override
   _MainState createState() => _MainState();
@@ -29,15 +38,24 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _currentIndex = 0;
+  late ScannerScreen _scannerScreen;
 
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    Container(),
-    Container(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _scannerScreen = ScannerScreen(camera: widget.camera);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      const HomeScreen(),
+      Builder(
+        builder: (context) => _scannerScreen, // Use a Builder here
+      ),
+      Container(),
+    ];
+
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -69,6 +87,7 @@ class _MainState extends State<Main> {
     );
   }
 }
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
