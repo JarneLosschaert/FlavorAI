@@ -36,8 +36,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
-    _scanTimer?.cancel(); // Cancel the timer when disposing the widget.
+    _stopScanning();
+    _initializeControllerFuture.then((_) => _controller.dispose());
     super.dispose();
   }
 
@@ -92,13 +92,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 return CameraPreview(_controller);
               } else {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(),  // todo: should probably optimize this, maybe use a static controller so the camera doesn't have to load in every time
                 );
               }
             },
           ),
           Positioned(
-            bottom: 16.0, // Adjust the bottom position as needed
+            bottom: 16,
             left: 0,
             right: 0,
             child: Center(
@@ -109,7 +109,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   size: 96,
                   color: _isScanning ? Colors.red : Colors.white,
                 ),
-                padding: const EdgeInsets.all(12), // Adjust the padding as needed
+                padding: const EdgeInsets.all(12),
                 tooltip: _isScanning ? 'Stop scanning' : 'Start scanning',
               ),
             ),

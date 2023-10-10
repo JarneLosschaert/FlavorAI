@@ -51,7 +51,7 @@ class _MainState extends State<Main> {
     final List<Widget> _pages = [
       const HomeScreen(),
       Builder(
-        builder: (context) => _scannerScreen, // Use a Builder here
+        builder: (context) => _scannerScreen,
       ),
       Container(),
     ];
