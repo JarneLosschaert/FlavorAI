@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
 
 import 'package:camera/camera.dart';
-import 'package:flavor_ai_testing/reused_widgets/BottomNavigator.dart';
+import 'package:flavor_ai_testing/UI/reused_widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key, required this.camera});
@@ -80,48 +77,45 @@ class _ScannerScreenState extends State<ScannerScreen> {
   Widget build(BuildContext context) {
     debugPrint('ScannerScreen.build: ${widget.camera.toString()}');
 
-    return Scaffold(
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            FutureBuilder<void>(
-              future: _initializeControllerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return CameraPreview(_controller);
-                } else {
-                  return const Center(
-                    child:
-                        CircularProgressIndicator(), // todo: should probably optimize this, maybe use a static controller so the camera doesn't have to load in every time
-                  );
-                }
-              },
-            ),
-            Positioned(
-              bottom: 16,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: IconButton(
-                  onPressed: _toggleScanning,
-                  icon: Icon(
-                    _isScanning
-                        ? Icons.radio_button_checked_rounded
-                        : Icons.circle_outlined,
-                    size: 96,
-                    color: _isScanning ? Colors.red : Colors.white,
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  tooltip: _isScanning ? 'Stop scanning' : 'Start scanning',
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          FutureBuilder<void>(
+            future: _initializeControllerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return CameraPreview(_controller);
+              } else {
+                return const Center(
+                  child:
+                      CircularProgressIndicator(), // todo: should probably optimize this, maybe use a static controller so the camera doesn't have to load in every time
+                );
+              }
+            },
+          ),
+          Positioned(
+            bottom: 16,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: IconButton(
+                onPressed: _toggleScanning,
+                icon: Icon(
+                  _isScanning
+                      ? Icons.radio_button_checked_rounded
+                      : Icons.circle_outlined,
+                  size: 96,
+                  color: _isScanning ? Colors.red : Colors.white,
                 ),
+                padding: const EdgeInsets.all(12),
+                tooltip: _isScanning ? 'Stop scanning' : 'Start scanning',
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      bottomNavigationBar: const BottomNavigator(),
     );
   }
 }

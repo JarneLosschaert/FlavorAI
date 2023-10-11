@@ -1,4 +1,4 @@
-import 'package:flavor_ai_testing/reused_widgets/BottomNavigator.dart';
+import 'package:flavor_ai_testing/UI/reused_widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,59 +16,56 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              flex: 1,
-              child: HomeScreenCard(
-                  text: "Recipes",
-                  subText: "You have saved 0 recipes",
-                  backgroundColor: Colors.grey,
-                  onTap: () => {debugPrint("Recipes tapped")}),
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            flex: 1,
+            child: HomeScreenCard(
+                text: "Recipes",
+                subText: "You have saved 0 recipes",
+                backgroundColor: Colors.grey,
+                onTap: () => {debugPrint("Recipes tapped")}),
+          ),
+          Flexible(
+            flex: 1,
+            child: HomeScreenCard(
+                text: "Refrigerator",
+                backgroundColor: Colors.grey,
+                onTap: () => {debugPrint("Refrigerator tapped")}),
+          ),
+          Flexible(
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  child: AspectRatio(
+                      aspectRatio: 1,
+                      child: HomeScreenCard(
+                        text: "3 free scans",
+                        backgroundColor: Color.fromARGB(255, 66, 66, 66),
+                        onTap: () => widget.onCardTapped?.call(1),
+                      )),
+                ),
+                Expanded(
+                  child: AspectRatio(
+                      aspectRatio: 1,
+                      child: HomeScreenCard(
+                        text: "Buy Premium",
+                        backgroundColor: Color.fromARGB(255, 66, 66, 66),
+                        onTap: () => {debugPrint("Buy Premium tapped")},
+                      )),
+                ),
+              ],
             ),
-            Flexible(
-              flex: 1,
-              child: HomeScreenCard(
-                  text: "Refrigerator",
-                  backgroundColor: Colors.grey,
-                  onTap: () => {debugPrint("Refrigerator tapped")}),
-            ),
-            Flexible(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: AspectRatio(
-                        aspectRatio: 1,
-                        child: HomeScreenCard(
-                          text: "3 free scans",
-                          backgroundColor: Color.fromARGB(255, 66, 66, 66),
-                          onTap: () => widget.onCardTapped?.call(1),
-                        )),
-                  ),
-                  Expanded(
-                    child: AspectRatio(
-                        aspectRatio: 1,
-                        child: HomeScreenCard(
-                          text: "Buy Premium",
-                          backgroundColor: Color.fromARGB(255, 66, 66, 66),
-                          onTap: () => {debugPrint("Buy Premium tapped")},
-                        )),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
-      bottomNavigationBar: BottomNavigator(),
     );
   }
 }

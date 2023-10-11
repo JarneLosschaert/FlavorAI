@@ -1,4 +1,4 @@
-import 'package:flavor_ai_testing/reused_widgets/BottomNavigator.dart';
+import 'package:flavor_ai_testing/UI/reused_widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -6,9 +6,6 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Placeholder(),
-      bottomNavigationBar: BottomNavigator(),
-    );
+    return const Placeholder();
   }
 }

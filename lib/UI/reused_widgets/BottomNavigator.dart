@@ -8,6 +8,8 @@ class BottomNavigator extends StatefulWidget {
 }
 
 class _BottomNavigatorState extends State<BottomNavigator> {
+  int _currentIndex = 0;
+
   static const _pages = <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -27,7 +29,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       onTap: (int index) {
-        Navigator.pushNamed(context, '/${_pages[index].label}');
+        setState(() {
+          _currentIndex = index;
+        });
       },
       items: _pages,
       selectedItemColor: Colors.green,
