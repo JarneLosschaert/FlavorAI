@@ -14,7 +14,6 @@ class AppScreens extends StatefulWidget {
 
 class _AppScreensState extends State<AppScreens> {
   CameraDescription? _camera;
-  List<Widget>? _pages;
   int _currentIndex = 0;
 
   @override
@@ -28,28 +27,35 @@ class _AppScreensState extends State<AppScreens> {
     final camera = await availableCameras().then((value) => value.first);
     setState(() {
       _camera = camera;
-      initPages();
     });
-  }
-
-  void initPages() {
-    _pages = [
-      HomeScreen(
-          onCardTapped: (index) => {
-                setState(() {
-                  _currentIndex = index;
-                })
-              }),
-      _camera != null ? ScannerScreen(camera: _camera!) : Container(),
-      const SettingsScreen(),
-    ];
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      HomeScreen(
+        onCardTapped: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+      _camera != null ? ScannerScreen(camera: _camera!) : Container(),
+      const SettingsScreen(),
+    ];
+
     return Scaffold(
-      body: _pages != null ? _pages![_currentIndex] : Container(),
       backgroundColor: backgroundColor,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 100),
+        child: _pages[_currentIndex],
+        transitionBuilder: (child, animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
