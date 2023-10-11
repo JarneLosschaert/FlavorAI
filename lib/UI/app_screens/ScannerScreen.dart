@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
-import 'package:flavor_ai_testing/UI/reused_widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
 
 class ScannerScreen extends StatefulWidget {

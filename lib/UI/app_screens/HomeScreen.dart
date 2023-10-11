@@ -1,4 +1,4 @@
-import 'package:flavor_ai_testing/UI/reused_widgets/BottomNavigator.dart';
+import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,14 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
             child: HomeScreenCard(
                 text: "Recipes",
                 subText: "You have saved 0 recipes",
-                backgroundColor: Colors.grey,
+                backgroundColor: secondaryBackgroundColor,
                 onTap: () => {debugPrint("Recipes tapped")}),
           ),
           Flexible(
             flex: 1,
             child: HomeScreenCard(
                 text: "Refrigerator",
-                backgroundColor: Colors.grey,
+                backgroundColor: secondaryBackgroundColor,
                 onTap: () => {debugPrint("Refrigerator tapped")}),
           ),
           Flexible(
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       aspectRatio: 1,
                       child: HomeScreenCard(
                         text: "3 free scans",
-                        backgroundColor: Color.fromARGB(255, 66, 66, 66),
+                        backgroundColor: tertiaryColor,
                         onTap: () => widget.onCardTapped?.call(1),
                       )),
                 ),
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       aspectRatio: 1,
                       child: HomeScreenCard(
                         text: "Buy Premium",
-                        backgroundColor: Color.fromARGB(255, 66, 66, 66),
+                        backgroundColor: tertiaryColor,
                         onTap: () => {debugPrint("Buy Premium tapped")},
                       )),
                 ),
@@ -95,7 +95,7 @@ class HomeScreenCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: secondaryBackgroundColor.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 4,
                 offset: const Offset(0, 2),

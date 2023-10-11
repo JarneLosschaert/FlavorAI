@@ -2,7 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flavor_ai_testing/UI/app_screens/HomeScreen.dart';
 import 'package:flavor_ai_testing/UI/app_screens/ScannerScreen.dart';
 import 'package:flavor_ai_testing/UI/app_screens/SettingsScreen.dart';
-import 'package:flavor_ai_testing/UI/reused_widgets/BottomNavigator.dart';
+import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class AppScreens extends StatefulWidget {
@@ -44,14 +44,14 @@ class _AppScreensState extends State<AppScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages != null ? _pages![_currentIndex] : const Placeholder(),
+      backgroundColor: backgroundColor,
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
           topRight: Radius.circular(20.0),
         ),
         child: BottomNavigationBar(
-          currentIndex:
-              _currentIndex,
+          currentIndex: _currentIndex,
           onTap: (int index) {
             setState(() {
               _currentIndex = index;
@@ -71,8 +71,8 @@ class _AppScreensState extends State<AppScreens> {
               label: 'Settings',
             ),
           ],
-          selectedItemColor: Colors.green,
-          unselectedItemColor: Colors.green.withOpacity(0.5),
+          selectedItemColor: primaryColor,
+          unselectedItemColor: secondaryColor,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedFontSize: 0.0,

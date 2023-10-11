@@ -1,17 +1,15 @@
 import 'package:camera/camera.dart';
 import 'package:flavor_ai_testing/UI/AppScreens.dart';
 import 'package:flavor_ai_testing/UI/AuthScreens.dart';
+import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, /*required this.camera*/});
-
-  // final CameraDescription camera;
+  const MyApp({super.key});
 
   final bool loggedIn = true; //temp
 
@@ -20,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flavor AI',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
