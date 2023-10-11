@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key, required this.camera});
@@ -63,18 +60,17 @@ class _ScannerScreenState extends State<ScannerScreen> {
   }
 
   Future<void> _takePicture() async {
-  try {
-    await _initializeControllerFuture;
-    final image = await _controller.takePicture();
+    try {
+      await _initializeControllerFuture;
+      final image = await _controller.takePicture();
 
-    debugPrint('ScannerScreen._takePicture: ${image.path}');
+      debugPrint('ScannerScreen._takePicture: ${image.path}');
 
-    // fetch to azure custom vision api
-
-  } catch (e) {
-    debugPrint(e.toString());
+      // fetch to azure custom vision api
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +88,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 return CameraPreview(_controller);
               } else {
                 return const Center(
-                  child: CircularProgressIndicator(),  // todo: should probably optimize this, maybe use a static controller so the camera doesn't have to load in every time
+                  child:
+                      CircularProgressIndicator(), // todo: should probably optimize this, maybe use a static controller so the camera doesn't have to load in every time
                 );
               }
             },
@@ -105,7 +102,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
               child: IconButton(
                 onPressed: _toggleScanning,
                 icon: Icon(
-                  _isScanning ? Icons.radio_button_checked_rounded : Icons.circle_outlined,
+                  _isScanning
+                      ? Icons.radio_button_checked_rounded
+                      : Icons.circle_outlined,
                   size: 96,
                   color: _isScanning ? Colors.red : Colors.white,
                 ),
