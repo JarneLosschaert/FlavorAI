@@ -5,7 +5,7 @@ import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
