@@ -34,8 +34,13 @@ class _AppScreensState extends State<AppScreens> {
 
   void initPages() {
     _pages = [
-      const HomeScreen(),
-      _camera != null ? ScannerScreen(camera: _camera!) : const Placeholder(),
+      HomeScreen(
+          onCardTapped: (index) => {
+                setState(() {
+                  _currentIndex = index;
+                })
+              }),
+      _camera != null ? ScannerScreen(camera: _camera!) : Container(),
       const SettingsScreen(),
     ];
   }
@@ -43,7 +48,7 @@ class _AppScreensState extends State<AppScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages != null ? _pages![_currentIndex] : const Placeholder(),
+      body: _pages != null ? _pages![_currentIndex] : Container(),
       backgroundColor: backgroundColor,
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
