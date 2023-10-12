@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'auth_screens/login_page.dart';
+
 class AuthScreens extends StatefulWidget {
   const AuthScreens({super.key});
 
@@ -10,6 +12,9 @@ class AuthScreens extends StatefulWidget {
 class _AuthScreensState extends State<AuthScreens> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
   }
 }
