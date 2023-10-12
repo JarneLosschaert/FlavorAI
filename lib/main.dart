@@ -5,17 +5,15 @@ import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
-  bool loggedIn = false; //temp
+   final bool loggedIn = true; //temp
 
-  void updateLoginStatus(bool status) {
-    loggedIn = status;
-  }
+
 
   @override
   Widget build(BuildContext context) {
