@@ -1,4 +1,6 @@
 
+import 'package:flavor_ai_testing/UI/AppScreens.dart';
+import 'package:flavor_ai_testing/UI/app_screens/HomeScreen.dart';
 import 'package:flavor_ai_testing/UI/auth_screens/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
