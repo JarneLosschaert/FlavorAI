@@ -33,7 +33,7 @@ class _AppScreensState extends State<AppScreens> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       HomeScreen(
         onCardTapped: (index) {
           setState(() {
@@ -50,7 +50,10 @@ class _AppScreensState extends State<AppScreens> {
       backgroundColor: backgroundColor,
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 100),
-        child: _pages[_currentIndex],
+        child: Container(
+          padding: const EdgeInsets.only(top: 32),
+          child: pages[_currentIndex],
+        ),
         transitionBuilder: (child, animation) {
           return FadeTransition(
             opacity: animation,

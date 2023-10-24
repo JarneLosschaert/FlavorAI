@@ -63,7 +63,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - lib/images/LogoFlavorAI.svg
+    - assets/images/flavorAI.svg
+    - assets/images/background-recipe.jpg
+    - assets/logo/logo.png
 
 
   # To add assets to your application, add an assets section, like this:

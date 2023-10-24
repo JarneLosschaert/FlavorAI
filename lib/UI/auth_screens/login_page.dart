@@ -48,7 +48,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 50),
                       SvgPicture.asset(
-                        'lib/images/LogoFlavorAI.svg',
+                        'assets/images/flavorAI.svg',
                         width: 125.0,
                         height: 125.0,
                       ),

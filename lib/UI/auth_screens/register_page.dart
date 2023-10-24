@@ -134,7 +134,7 @@ class RegisterPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 50),
                       SvgPicture.asset(
-                        'lib/images/LogoFlavorAI.svg',
+                        'assets/images/flavorAI.svg',
                         // Replace with the path to your SVG asset
                         width: 125.0, // Adjust the width as needed
                         height: 125.0, // Adjust the height as needed

@@ -18,4 +18,5 @@ Color primaryBackgroundColor = white;
 Color secondaryBackgroundColor = darkGrey;
 
 Color primaryTextColor = black;
-Color secondaryTextColor = white;
+Color secondaryTextColor = darkGrey;
+Color tertiaryTextColor = white;
