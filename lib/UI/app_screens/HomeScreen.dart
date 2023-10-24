@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 text: "Recipes",
                 subText: "You have saved 0 recipes",
                 backgroundColor: secondaryBackgroundColor,
-                onTap: () => {debugPrint("Recipes tapped")}),
+                onTap: () => {widget.onCardTapped?.call(3)}),
           ),
           Flexible(
             flex: 1,
