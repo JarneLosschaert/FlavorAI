@@ -43,7 +43,7 @@ class _AppScreensState extends State<AppScreens> {
       ),
       _camera != null ? ScannerScreen(camera: _camera!) : Container(),
       const SettingsScreen(),
-      const RecipesScreen()
+      RecipesScreen(onGoBack: () => setState(() => _currentIndex = 0)),
     ];
 
     return Scaffold(

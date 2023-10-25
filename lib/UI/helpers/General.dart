@@ -6,10 +6,12 @@ class BasicTitle extends StatelessWidget {
     Key? key,
     required this.text,
     this.withGoBack = true,
+    this.onGoBack,
   }) : super(key: key);
 
   final String text;
   final bool withGoBack;
+  final void Function()? onGoBack;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,10 @@ class BasicTitle extends StatelessWidget {
         children: [
           if (withGoBack)
             Expanded(
+                child: GestureDetector(
+              onTap: () {
+                onGoBack?.call();
+              },
               child: Row(
                 children: [
                   Icon(
@@ -36,10 +42,11 @@ class BasicTitle extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ))
           else
             Expanded(child: Container()),
-          Expanded(child: Text(
+          Expanded(
+              child: Text(
             text,
             textAlign: TextAlign.center,
             style: const TextStyle(

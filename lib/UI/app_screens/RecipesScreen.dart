@@ -1,10 +1,15 @@
-import 'package:flavor_ai_testing/UI/helpers/Searchbar.dart';
 import 'package:flavor_ai_testing/UI/helpers/General.dart';
+import 'package:flavor_ai_testing/UI/helpers/Searchbar.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class RecipesScreen extends StatefulWidget {
-  const RecipesScreen({super.key});
+  const RecipesScreen({
+    super.key,
+    this.onGoBack,
+  });
+
+  final Function()? onGoBack;
 
   @override
   State<RecipesScreen> createState() => _RecipesScreenState();
@@ -14,11 +19,11 @@ class _RecipesScreenState extends State<RecipesScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child:Container(
+        child: Container(
       padding: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
         children: [
-          const BasicTitle(text: "Recipes"),
+          BasicTitle(text: "Recipes", onGoBack: () => {widget.onGoBack?.call()}),
           const Subtitle(text: "Search recipes"),
           SearchBarRecipes(
             onSubmitted: (query) {
@@ -30,8 +35,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
           Container(height: 20),
         ],
       ),
-        )
-    );
+    ));
   }
 }
 
@@ -120,17 +124,11 @@ class Recipe extends StatelessWidget {
             children: [
               Text(
                 recipeTitle,
-                style: TextStyle(
-                    fontSize: 18,
-                    color: tertiaryTextColor
-                ),
+                style: TextStyle(fontSize: 18, color: tertiaryTextColor),
               ),
               Text(
                 time,
-                style: TextStyle(
-                    fontSize: 15,
-                    color: tertiaryTextColor
-                ),
+                style: TextStyle(fontSize: 15, color: tertiaryTextColor),
               ),
             ],
           )
