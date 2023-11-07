@@ -44,6 +44,7 @@ dependencies:
   webview_flutter: ^4.4.1
   riverpod: ^0.14.0
   provider: ^5.0.0
+  back_button_interceptor: ^7.0.0
 
 dev_dependencies:
   flutter_test:

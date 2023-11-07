@@ -1,9 +1,10 @@
-import 'package:flavor_ai_testing/UI/helpers/searchbar.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flavor_ai_testing/logic/models/filter_state.dart';
 import 'package:flavor_ai_testing/logic/models/recipe.dart';
 import 'package:flutter/material.dart';
 import '../components//general_components.dart';
+import '../components/searchbar.dart';
 
 
 class RecipesScreen extends StatefulWidget {
@@ -31,10 +32,23 @@ class RecipesScreen extends StatefulWidget {
 }
 
 class _RecipesScreenState extends State<RecipesScreen> {
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    widget.onGoBack.call();
+    return true;
+  }
+
   @override
   void initState() {
+    BackButtonInterceptor.add(myInterceptor);
     super.initState();
     widget.onQueryChange('');
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
   }
 
   @override

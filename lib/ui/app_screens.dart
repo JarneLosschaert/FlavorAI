@@ -9,7 +9,6 @@ import 'package:flavor_ai_testing/ui/app_screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class AppScreens extends StatefulWidget {
   const AppScreens({super.key});
 
@@ -41,11 +40,13 @@ class _AppScreensState extends State<AppScreens> {
       HomeScreen(
         onCardTapped: controller.navigateTo,
       ),
-
-      _camera != null ? ScannerScreen(camera: _camera!) : Container(),
-
-      const SettingsScreen(),
-
+      _camera != null
+          ? ScannerScreen(
+              onGoBack: () => controller.navigateTo(0), camera: _camera!)
+          : Container(),
+      SettingsScreen(
+        onGoBack: () => controller.navigateTo(0),
+      ),
       RecipesScreen(
         onGoBack: () => controller.navigateTo(0),
         recipes: controller.uiState.recipes,
@@ -55,8 +56,8 @@ class _AppScreensState extends State<AppScreens> {
         onDropdownChange: controller.onDropdownChange,
         onRecipeTapped: controller.onRecipeTap,
       ),
-
       RecipeScreen(
+        onGoBack: () => controller.navigateTo(3),
         recipeId: controller.uiState.recipeId,
       )
     ];

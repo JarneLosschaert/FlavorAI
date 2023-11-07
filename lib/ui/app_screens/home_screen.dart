@@ -1,5 +1,7 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -14,6 +16,46 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Exit App"),
+          content: const Text("Do you want to exit the app?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              },
+            ),
+          ],
+        );
+      },
+    );
+    return true;
+  }
+
+  @override
+  void initState() {
+    BackButtonInterceptor.add(myInterceptor);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
