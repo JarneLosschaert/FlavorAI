@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../AppScreens.dart'; // Import your AppScreens widget
+import '../app_screens.dart'; // Import your AppScreens widget
 
 class LoginRegisterButton extends StatelessWidget {
   final String buttonText;
