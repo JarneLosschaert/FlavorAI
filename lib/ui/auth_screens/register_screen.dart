@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'login_page.dart';
-import 'login_register_button.dart';
+import 'login_screen.dart';
+import '../components/login_register_button.dart';
 
 
 
