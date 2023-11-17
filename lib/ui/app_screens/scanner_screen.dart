@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flavor_ai_testing/logic/services/recipes_service.dart';
+import 'package:flavor_ai_testing/logic/service.dart';
 import 'package:flutter/material.dart';
 
 class ScannerScreen extends StatefulWidget {
@@ -80,7 +80,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
         debugPrint('ScannerScreen._takePicture: ${image.path}');
 
         String responseBody =
-            await ApiService.instance.fetchProductsFromImage(File(image.path));
+            await Service.instance.fetchProductsFromImage(File(image.path));
 
         debugPrint('Response from image upload: $responseBody');
 

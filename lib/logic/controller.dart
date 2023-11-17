@@ -1,6 +1,6 @@
 import 'package:flavor_ai_testing/logic/ui_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flavor_ai_testing/logic/services/recipes_service.dart';
+import 'package:flavor_ai_testing/logic/service.dart';
 import 'models/filter_state.dart';
 import 'models/recipe.dart';
 
@@ -17,7 +17,7 @@ class Controller with ChangeNotifier {
       return map;
     });
     parameter['query'] = uiState.query;
-    List<Recipe> recipes = await ApiService.instance.fetchRecipes(parameter);
+    List<Recipe> recipes = await Service.instance.fetchRecipes(parameter);
     uiState.recipes = recipes;
     notifyListeners();
   }

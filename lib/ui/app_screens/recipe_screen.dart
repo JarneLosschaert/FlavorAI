@@ -1,6 +1,6 @@
+import 'package:flavor_ai_testing/logic/service.dart';
 import 'package:flutter/cupertino.dart';
 import '../../logic/models/recipe_detail.dart';
-import '../../logic/services/recipes_service.dart';
 
 class RecipeScreen extends StatefulWidget {
   const RecipeScreen({
@@ -22,7 +22,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
   }
 
   void _searchRecipe() async {
-    RecipeDetail recipe = await ApiService.instance.fetchRecipeDetail(widget.recipeId);
+    RecipeDetail recipe = await Service.instance.fetchRecipeDetail(widget.recipeId);
   }
 
   @override

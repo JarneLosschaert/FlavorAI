@@ -1,7 +1,4 @@
-import 'package:flavor_ai_testing/logic/models/recipe.dart';
 import 'package:flutter/material.dart';
-
-import '../../logic/services/recipes_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
