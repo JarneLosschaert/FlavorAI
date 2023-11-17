@@ -1,7 +1,7 @@
-import 'package:flavor_ai_testing/UI/helpers/searchbar.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flavor_ai_testing/logic/models/filter_state.dart';
 import 'package:flavor_ai_testing/logic/models/recipe.dart';
+import 'package:flavor_ai_testing/ui/components/searchbar.dart';
 import 'package:flutter/material.dart';
 import '../components//general_components.dart';
 

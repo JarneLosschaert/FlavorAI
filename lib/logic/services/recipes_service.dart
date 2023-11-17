@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 import '../models/recipe.dart';
 import '../models/recipe_detail.dart';
@@ -12,6 +13,7 @@ class ApiService {
   static final ApiService instance = ApiService._instantiate();
   final String _baseURL = "api.spoonacular.com";
   static const String _apiKey = "36ff91910cc4441aa249e32ab7ac7813";
+  static const String _flaskApiIp = "192.168.1.110:9090";
 
   Future<List<Recipe>> fetchRecipes(Map<String, String> parameters) async {
     parameters['apiKey'] = _apiKey;
@@ -54,6 +56,34 @@ class ApiService {
       Map<String, dynamic> data = json.decode(response.body);
       RecipeDetail recipe = RecipeDetail.fromMap(data);
       return recipe;
+    } catch (err) {
+      throw err.toString();
+    }
+  }
+
+  Future<String> fetchProductsFromImage(File imageFile) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('http://${_flaskApiIp}/detect_products'),
+    );
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        imageFile.path,
+        filename: path.basename(imageFile.path),
+      ),
+    );
+
+    try {
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        throw 'Failed to upload image. Status code: ${response.statusCode}';
+      }
     } catch (err) {
       throw err.toString();
     }
