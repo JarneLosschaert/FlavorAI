@@ -1,11 +1,17 @@
 import 'dart:async';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class ScannerScreen extends StatefulWidget {
-  const ScannerScreen({super.key, required this.camera});
+  const ScannerScreen({
+    super.key,
+    required this.onGoBack,
+    required this.camera
+  });
 
+  final Function() onGoBack;
   final CameraDescription camera;
 
   @override
@@ -18,9 +24,15 @@ class _ScannerScreenState extends State<ScannerScreen> {
   bool _isScanning = false;
   Timer? _scanTimer;
 
+  bool interceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    widget.onGoBack.call();
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
+    BackButtonInterceptor.add(interceptor);
 
     _controller = CameraController(
       widget.camera,
@@ -33,6 +45,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   @override
   void dispose() {
+    BackButtonInterceptor.remove(interceptor);
+
     _stopScanning();
     _initializeControllerFuture.then((_) => _controller.dispose());
     super.dispose();
