@@ -11,12 +11,12 @@ class UiState {
 
   RecipeDetail recipeDetail = RecipeDetail(id: -1, title: '', image: '');
 
-  FilterState ingredientsFilter = FilterState('includeIngredients', ["tomato", "cheese"]);
+  FilterState ingredientsFilter = FilterState('includeIngredients', ["tomato"]);
   final List<FilterState> filters = [
     FilterState('cuisine', cuisines),
+    FilterState('type', types),
     FilterState('diet', diets),
     FilterState('intolerance', intolerances),
-    FilterState('type', types),
   ];
 
   FilterState getFilter(filter) {

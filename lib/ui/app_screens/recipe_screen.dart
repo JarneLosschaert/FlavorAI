@@ -154,7 +154,8 @@ class _RecipeScreenState extends State<RecipeScreen> {
                         Container(
                             height: 25,
                             width: 100,
-                            padding: const EdgeInsets.all(5),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.only(left: 5, right: 5),
                             decoration: BoxDecoration(
                               color: primaryColor,
                               borderRadius: BorderRadius.circular(5),

@@ -298,7 +298,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   Widget _buildSort() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           'sort by',

@@ -1,7 +1,7 @@
-import 'package:flavor_ai_testing/logic/models/recipe_detail.dart';
+import 'package:flavor_ai_testing/logic/services/recipes_service.dart';
 import 'package:flavor_ai_testing/logic/ui_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flavor_ai_testing/logic/services/recipes_service.dart';
+
 import 'models/filter_state.dart';
 import 'models/recipe.dart';
 
@@ -11,7 +11,7 @@ class Controller with ChangeNotifier {
 
   Future<void> getRecipes() async {
     Map<String, String> parameter =
-    uiState.filters.fold({}, (Map<String, String> map, FilterState filter) {
+        uiState.filters.fold({}, (Map<String, String> map, FilterState filter) {
       if (filter.value != '...') {
         map[filter.filter] = filter.value;
       }
@@ -22,8 +22,10 @@ class Controller with ChangeNotifier {
           uiState.ingredientsFilter.value;
     }
     parameter['query'] = uiState.query;
-    if (uiState.ingredientsFilter.displayed) {
-      parameter['includeIngredients'] = uiState.ingredientsFilter.items.join(',');
+    if (uiState.ingredientsFilter.displayed &&
+        uiState.ingredientsFilter.items.isNotEmpty) {
+      parameter['includeIngredients'] =
+          uiState.ingredientsFilter.items.join(',');
     }
     parameter['sort'] = uiState.sort;
     parameter['sortDirection'] = uiState.sortDirection;
@@ -67,7 +69,8 @@ class Controller with ChangeNotifier {
   }
 
   Future<void> onRecipeTap(String recipeId) async {
-    uiState.recipeDetail = await ApiService.instance.fetchRecipeDetail(recipeId);
+    uiState.recipeDetail =
+        await ApiService.instance.fetchRecipeDetail(recipeId);
     navigateTo(4);
   }
 
