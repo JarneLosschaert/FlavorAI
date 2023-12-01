@@ -51,14 +51,20 @@ class _AppScreensState extends State<AppScreens> {
         onGoBack: () => controller.navigateTo(0),
         recipes: controller.uiState.recipes,
         filters: controller.uiState.filters,
+        ingredientsFilter: controller.uiState.ingredientsFilter,
+        sort: controller.uiState.sort,
+        sortDirection: controller.uiState.sortDirection,
         onQueryChange: controller.onQueryChange,
         onFilterTap: controller.onFilterTap,
+        onIngredientsTap: controller.onIngredientsTap,
         onDropdownChange: controller.onDropdownChange,
+        onSortChange: controller.onSortChange,
+        onSortDirectionChange: controller.onSortDirectionChange,
         onRecipeTapped: controller.onRecipeTap,
       ),
       RecipeScreen(
         onGoBack: () => controller.navigateTo(3),
-        recipeId: controller.uiState.recipeId,
+        recipe: controller.uiState.recipeDetail,
       )
     ];
 
@@ -67,7 +73,7 @@ class _AppScreensState extends State<AppScreens> {
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 100),
         child: Container(
-          padding: const EdgeInsets.only(top: 32),
+          padding: const EdgeInsets.only(top: 32, left: 15, right: 15),
           child: pages[controller.currentIndex],
         ),
         transitionBuilder: (child, animation) {

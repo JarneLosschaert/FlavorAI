@@ -90,20 +90,22 @@ class GeneralDropdown extends StatelessWidget {
     required this.items,
     required this.onChange,
     required this.selectedValue,
-    required this.label,
+    this.label = '',
+    this.withLabel = true,
   }) : super(key: key);
 
   final List<String> items;
   final void Function(String?) onChange;
   final String selectedValue;
   final String label;
+  final bool withLabel;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Subtitle(text: label),
+        if (withLabel) Subtitle(text: label),
         Container(
           height: 30,
           padding: const EdgeInsets.only(left: 10, right: 10),

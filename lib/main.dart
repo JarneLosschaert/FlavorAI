@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+      return ChangeNotifierProvider(
         create: (context) => Controller(),
         child: MaterialApp(
           title: 'Flavor AI',
