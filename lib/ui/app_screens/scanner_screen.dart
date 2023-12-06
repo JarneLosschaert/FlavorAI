@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flavor_ai_testing/logic/service.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +22,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
   bool _isScanning = false;
   Timer? _scanTimer;
   bool _isProcessing = false;
-  String _foundProductName = '';
+  List<String> _foundProductsPopup = [];
+  List<String> _foundProducts = [];
 
   @override
   void initState() {
@@ -28,7 +31,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
     _controller = CameraController(
       widget.camera,
-      ResolutionPreset.high,
+      ResolutionPreset.veryHigh,
       enableAudio: false,
     );
 
@@ -84,14 +87,26 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
         debugPrint('Response from image upload: $responseBody');
 
-        setState(() {
-          _foundProductName = responseBody;
-        });
+        Map<String, dynamic> responseMap = json.decode(responseBody);
+
+        if (responseMap.containsKey("products")) {
+          List<String> products = List<String>.from(responseMap["products"]);
+          setState(() {
+            for (var p in products) {
+              if (!_foundProducts.contains(p)) {
+                _foundProducts.add(p);
+                _foundProductsPopup.add(p);
+              }
+             }
+          });
+        } else {
+          // Handle if the "products" key is missing or the response format is unexpected
+        }
 
         // Automatically clear the found product name after a delay
         Future.delayed(const Duration(seconds: 3), () {
           setState(() {
-            _foundProductName = '';
+            _foundProductsPopup = [];
           });
         });
       } catch (e) {
@@ -103,7 +118,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -127,17 +141,21 @@ class _ScannerScreenState extends State<ScannerScreen> {
             },
           ),
           Positioned(
-            bottom: 100,
+            bottom: 200,
             left: 0,
             right: 0,
             child: Center(
-              child: Text(
-                _foundProductName,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Column(
+                children: _foundProductsPopup.map((element) {
+                  return Text(
+                    element,
+                    style: const TextStyle(
+                      color: Colors.deepOrangeAccent,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }).toList(),
               ),
             ),
           ),
@@ -146,7 +164,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
             left: 0,
             right: 0,
             child: Center(
-              child: IconButton(
+              child: IconButton(  // scanner button
                 onPressed: _toggleScanning,
                 icon: Icon(
                   _isScanning
@@ -157,6 +175,25 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 ),
                 padding: const EdgeInsets.all(12),
                 tooltip: _isScanning ? 'Stop scanning' : 'Start scanning',
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 52,
+            right: 16,
+            child: ElevatedButton( // found products button
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  lightGreen,
+                ),
+              ),
+              onPressed: () {}, // Add functionality here
+              child: Text(
+                'Items (${_foundProducts.length})',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
