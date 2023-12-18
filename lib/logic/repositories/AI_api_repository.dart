@@ -5,7 +5,7 @@ import 'package:path/path.dart' as path;
 
 class AIApiRepository {
 
-    static const String _flaskApiIp = "192.168.152.164:9090";
+    static const String _flaskApiIp = "192.168.113.164:9090";
 
     Future<String> fetchProductsFromImage(File imageFile) async {
     var request = http.MultipartRequest(

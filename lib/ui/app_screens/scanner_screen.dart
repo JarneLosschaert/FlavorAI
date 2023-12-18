@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+
+import 'dart:ui' as ui;
+import 'package:image/image.dart' as img;
+
+import 'package:path_provider/path_provider.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
@@ -19,11 +25,16 @@ class ScannerScreen extends StatefulWidget {
 class _ScannerScreenState extends State<ScannerScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+
   bool _isScanning = false;
   Timer? _scanTimer;
   bool _isProcessing = false;
   List<String> _foundProductsPopup = [];
   List<String> _foundProducts = [];
+  final Map<String, List<double>> _cropRectangleCoords = {
+    "x": [0.1, 0.9],
+    "y": [0.4, 0.55],
+  };
 
   @override
   void initState() {
@@ -80,10 +91,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
         final XFile image = await _controller.takePicture();
 
+        final croppedImage = await _cropImage(image);  // cropping doesn't completely match the rectangle on the CameraPreview yet
+
+        debugPrint('previewSize: ${_controller.value.previewSize!.width}x${_controller.value.previewSize!.height}');
         debugPrint('ScannerScreen._takePicture: ${image.path}');
 
         String responseBody =
-            await Service.instance.fetchProductsFromImage(File(image.path));
+            await Service.instance.fetchProductsFromImage(croppedImage);
 
         debugPrint('Response from image upload: $responseBody');
 
@@ -97,7 +111,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 _foundProducts.add(p);
                 _foundProductsPopup.add(p);
               }
-             }
+            }
           });
         } else {
           // Handle if the "products" key is missing or the response format is unexpected
@@ -119,6 +133,42 @@ class _ScannerScreenState extends State<ScannerScreen> {
     }
   }
 
+  Future<File> _cropImage(XFile image) async {
+    final bytes = File(image.path).readAsBytesSync();
+    final rawImage = img.decodeImage(bytes)!;
+
+    double left = _cropRectangleCoords["x"]![0] * rawImage.width;
+    double top = _cropRectangleCoords["y"]![0] * rawImage.height;
+    double width = rawImage.width * (_cropRectangleCoords["x"]![1] - _cropRectangleCoords["x"]![0]);
+    double height = rawImage.height * (_cropRectangleCoords["y"]![1] - _cropRectangleCoords["y"]![0]);
+
+    debugPrint('left: $left, top: $top, width: $width, height: $height');
+
+
+    final croppedImage = img.copyCrop(
+      rawImage,
+      left.toInt(),
+      top.toInt(),
+      width.toInt(),
+      height.toInt(),
+    );
+
+    debugPrint('croppedImage: ${croppedImage.width}x${croppedImage.height}');
+
+    final croppedBytes = Uint8List.fromList(img.encodePng(croppedImage));
+    final croppedImageFile = await _saveImageToDisk(croppedBytes);
+
+    return croppedImageFile;
+  }
+
+  Future<File> _saveImageToDisk(Uint8List croppedBytes) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/cropped_image.png';
+    final File croppedImageFile = File(filePath);
+    await croppedImageFile.writeAsBytes(croppedBytes);
+    return croppedImageFile;
+}
+
   @override
   Widget build(BuildContext context) {
     debugPrint('ScannerScreen.build: ${widget.camera.toString()}');
@@ -132,7 +182,34 @@ class _ScannerScreenState extends State<ScannerScreen> {
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return CameraPreview(_controller);
+                return LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    // double rectWidth = 280;
+                    // double rectHeight = 100;
+                  
+                    double rectWidth = constraints.maxWidth * (_cropRectangleCoords["x"]![1] - _cropRectangleCoords["x"]![0]);
+                    double rectHeight = constraints.maxHeight * (_cropRectangleCoords["y"]![1] - _cropRectangleCoords["y"]![0]);
+
+                    debugPrint(
+                        'layoutbuilder controller previewSize: ${_controller.value.previewSize!.width}x${_controller.value.previewSize!.height}');
+                    debugPrint(
+                        'constraints: ${constraints.maxWidth}x${constraints.maxHeight}');
+
+                    return CameraPreview(_controller,
+                        child: Positioned(
+                          // left: (constraints.maxWidth - rectWidth) / 2,
+                          // top: (constraints.maxHeight - rectHeight) / 2,
+                          left: constraints.maxWidth * _cropRectangleCoords["x"]![0],
+                          top: constraints.maxHeight * _cropRectangleCoords["y"]![0],
+                          child: CustomPaint(
+                            painter: RectanglePainter(
+                              rectWidth: rectWidth,
+                              rectHeight: rectHeight,
+                            ),
+                          ),
+                        ));
+                  },
+                );
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -164,7 +241,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
             left: 0,
             right: 0,
             child: Center(
-              child: IconButton(  // scanner button
+              child: IconButton(
+                // scanner button
                 onPressed: _toggleScanning,
                 icon: Icon(
                   _isScanning
@@ -181,7 +259,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
           Positioned(
             bottom: 52,
             right: 16,
-            child: ElevatedButton( // found products button
+            child: ElevatedButton(
+              // found products button
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
                   lightGreen,
@@ -200,5 +279,36 @@ class _ScannerScreenState extends State<ScannerScreen> {
         ],
       ),
     );
+  }
+}
+
+class RectanglePainter extends CustomPainter {
+  final double rectWidth;
+  final double rectHeight;
+
+  RectanglePainter({
+    required this.rectWidth,
+    required this.rectHeight,
+  });
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+
+    final Rect rect = Rect.fromLTRB(
+      0,
+      0,
+      rectWidth,
+      rectHeight,
+    );
+
+    canvas.drawRect(rect, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
