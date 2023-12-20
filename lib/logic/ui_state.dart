@@ -8,9 +8,6 @@ class UiState {
   String query = '';
   String sort = sortItems[0];
   String sortDirection = 'desc';
-
-  RecipeDetail recipeDetail = RecipeDetail(id: -1, title: '', image: '');
-
   FilterState ingredientsFilter = FilterState('includeIngredients', ["tomato"]);
   final List<FilterState> filters = [
     FilterState('cuisine', cuisines),
@@ -18,6 +15,10 @@ class UiState {
     FilterState('diet', diets),
     FilterState('intolerance', intolerances),
   ];
+
+  RecipeDetail recipeDetail = RecipeDetail(id: -1, title: '', image: '');
+
+  List<String> ingredients = ["apples", "bananas", "oranges"];
 
   FilterState getFilter(filter) {
     return filters.firstWhere((element) => element.filter == filter,

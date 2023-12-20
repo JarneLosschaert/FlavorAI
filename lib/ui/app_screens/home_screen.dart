@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: HomeScreenCard(
                 text: "Refrigerator",
                 backgroundColor: secondaryBackgroundColor,
-                onTap: () => {debugPrint("Refrigerator tapped")}),
+                onTap: () => {widget.onCardTapped?.call(5)}),
           ),
           Flexible(
             flex: 1,

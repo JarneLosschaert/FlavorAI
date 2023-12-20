@@ -66,6 +66,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
         children: [
           BasicTitle(text: "Recipes", onGoBack: () => widget.onGoBack.call()),
