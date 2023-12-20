@@ -6,6 +6,7 @@ import 'package:flavor_ai_testing/UI/app_screens/settings_screen.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flavor_ai_testing/logic/controller.dart';
 import 'package:flavor_ai_testing/ui/app_screens/recipe_screen.dart';
+import 'package:flavor_ai_testing/ui/app_screens/refrigerator_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,7 +66,11 @@ class _AppScreensState extends State<AppScreens> {
       RecipeScreen(
         onGoBack: () => controller.navigateTo(3),
         recipe: controller.uiState.recipeDetail,
-      )
+      ),
+      RefrigeratorScreen(
+          ingredients: controller.uiState.ingredients,
+          addIngredient: controller.addIngredient,
+          onGoBack: () => controller.navigateTo(0)),
     ];
 
     return Scaffold(
@@ -73,7 +78,7 @@ class _AppScreensState extends State<AppScreens> {
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 100),
         child: Container(
-          padding: const EdgeInsets.only(top: 32, left: 15, right: 15),
+          padding: const EdgeInsets.only(top: 38),
           child: pages[controller.currentIndex],
         ),
         transitionBuilder: (child, animation) {

@@ -22,6 +22,7 @@ class BasicTitle extends StatelessWidget {
         children: [
           if (withGoBack)
             Expanded(
+                flex: 1,
                 child: GestureDetector(
                   onTap: () {
                     onGoBack?.call();
@@ -44,8 +45,9 @@ class BasicTitle extends StatelessWidget {
                   ),
                 ))
           else
-            Expanded(child: Container()),
+            Expanded(flex: 1, child: Container()),
           Expanded(
+              flex: 3,
               child: Text(
                 text,
                 textAlign: TextAlign.center,
@@ -54,7 +56,7 @@ class BasicTitle extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               )),
-          Expanded(child: Container()),
+          Expanded(flex: 1,child: Container(),),
         ],
       ),
     );

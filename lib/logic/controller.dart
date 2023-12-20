@@ -74,6 +74,11 @@ class Controller with ChangeNotifier {
     navigateTo(4);
   }
 
+  void addIngredient(String ingredient) {
+    uiState.ingredients.add(ingredient);
+    notifyListeners();
+  }
+
   void navigateTo(int index) {
     currentIndex = index;
     notifyListeners();
