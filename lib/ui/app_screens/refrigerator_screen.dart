@@ -10,11 +10,13 @@ class RefrigeratorScreen extends StatefulWidget {
     super.key,
     required this.ingredients,
     required this.addIngredient,
+    required this.removeIngredient,
     required this.onGoBack,
   });
 
   final List<String> ingredients;
   final Function(String) addIngredient;
+  final Function(String) removeIngredient;
   final Function() onGoBack;
 
   @override
@@ -89,22 +91,48 @@ class _RefrigeratorScreenState extends State<RefrigeratorScreen> {
 
   Widget _buildIngredient(String ingredient) {
     return Container(
+      padding: const EdgeInsets.only(left: 10, right: 10),
       height: 40,
-      width: 146,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: primaryColor,
       ),
-      child: Text(
-        ingredient,
-        style: TextStyle(
-          fontSize: 16,
-          color: tertiaryTextColor,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              ingredient,
+              style: TextStyle(
+                fontSize: 16,
+                color: tertiaryTextColor,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              widget.removeIngredient.call(ingredient);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: errorColor,
+              ),
+              child: Icon(
+                Icons.remove,
+                color: tertiaryTextColor,
+                size: 15,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
 
   Widget _buildAddButton() {
     return Stack(

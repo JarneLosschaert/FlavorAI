@@ -302,9 +302,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          'sort by',
+          'Sort by',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 14,
             color: primaryTextColor,
           ),
         ),

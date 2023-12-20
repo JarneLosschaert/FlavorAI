@@ -8,7 +8,7 @@ class UiState {
   String query = '';
   String sort = sortItems[0];
   String sortDirection = 'desc';
-  FilterState ingredientsFilter = FilterState('includeIngredients', ["tomato"]);
+  FilterState ingredientsFilter = FilterState('includeIngredients', ["apples", "bananas", "oranges"]);
   final List<FilterState> filters = [
     FilterState('cuisine', cuisines),
     FilterState('type', types),
@@ -17,8 +17,6 @@ class UiState {
   ];
 
   RecipeDetail recipeDetail = RecipeDetail(id: -1, title: '', image: '');
-
-  List<String> ingredients = ["apples", "bananas", "oranges"];
 
   FilterState getFilter(filter) {
     return filters.firstWhere((element) => element.filter == filter,
