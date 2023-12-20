@@ -70,7 +70,11 @@ flutter:
   assets:
     - assets/images/background-recipe.jpg
     - assets/images/flavorAI.svg
-    - assets/images/fridge.png
+    - assets/images/fridge_icon.png
+    - assets/images/ingredients.webp
+    - assets/images/recipes.jpg
+    - assets/images/fridge.jpg
+    - assets/images/scan.png
 
 
   # To add assets to your application, add an assets section, like this:
