@@ -128,7 +128,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
           color: widget.ingredientsFilter.displayed ? primaryColor : primaryBackgroundColor,
         ),
         child: Center(
-          child: Image.asset('assets/images/fridge.png')
+          child: Image.asset('assets/images/fridge_icon.png')
         ),
       ),
     );
@@ -243,6 +243,17 @@ class _RecipesScreenState extends State<RecipesScreen> {
               for (Recipe recipe in widget.recipes) _buildRecipe(recipe),
             ],
           ),
+          if (widget.recipes.isEmpty)
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                'No recipes found',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: primaryTextColor,
+                ),
+              ),
+            ),
           Container(height: 20),
         ],
       ),

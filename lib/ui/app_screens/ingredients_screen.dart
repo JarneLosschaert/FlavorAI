@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../components/general_components.dart';
 
-class RefrigeratorScreen extends StatefulWidget {
-  const RefrigeratorScreen({
+class IngredientsScreen extends StatefulWidget {
+  const IngredientsScreen({
     super.key,
     required this.ingredients,
     required this.addIngredient,
@@ -20,10 +20,10 @@ class RefrigeratorScreen extends StatefulWidget {
   final Function() onGoBack;
 
   @override
-  State<RefrigeratorScreen> createState() => _RefrigeratorScreenState();
+  State<IngredientsScreen> createState() => _IngredientsScreenState();
 }
 
-class _RefrigeratorScreenState extends State<RefrigeratorScreen> {
+class _IngredientsScreenState extends State<IngredientsScreen> {
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
     widget.onGoBack.call();
     return true;
@@ -50,7 +50,7 @@ class _RefrigeratorScreenState extends State<RefrigeratorScreen> {
           child: Column(
             children: [
               BasicTitle(
-                text: "Refrigerator",
+                text: "Ingredients",
                 onGoBack: () => widget.onGoBack.call(),
               ),
               _buildIngredients(),
@@ -169,7 +169,7 @@ class _RefrigeratorScreenState extends State<RefrigeratorScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add Ingredient'),
+          title: const Text('Add ingredient'),
           content: TextField(
             controller: ingredientController,
             decoration: const InputDecoration(labelText: 'Ingredient'),

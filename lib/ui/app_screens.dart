@@ -6,7 +6,7 @@ import 'package:flavor_ai_testing/UI/app_screens/settings_screen.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flavor_ai_testing/logic/controller.dart';
 import 'package:flavor_ai_testing/ui/app_screens/recipe_screen.dart';
-import 'package:flavor_ai_testing/ui/app_screens/refrigerator_screen.dart';
+import 'package:flavor_ai_testing/ui/app_screens/ingredients_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +39,7 @@ class _AppScreensState extends State<AppScreens> {
     final controller = Provider.of<Controller>(context);
     final List<Widget> pages = [
       HomeScreen(
+        amountOfIngredients: controller.uiState.ingredientsFilter.items.length,
         onCardTapped: controller.navigateTo,
       ),
       _camera != null
@@ -67,7 +68,7 @@ class _AppScreensState extends State<AppScreens> {
         onGoBack: () => controller.navigateTo(3),
         recipe: controller.uiState.recipeDetail,
       ),
-      RefrigeratorScreen(
+      IngredientsScreen(
           ingredients: controller.uiState.ingredientsFilter.items,
           addIngredient: controller.addIngredient,
           removeIngredient: controller.removeIngredient,
