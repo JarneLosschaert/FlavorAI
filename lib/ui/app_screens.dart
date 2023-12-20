@@ -68,8 +68,9 @@ class _AppScreensState extends State<AppScreens> {
         recipe: controller.uiState.recipeDetail,
       ),
       RefrigeratorScreen(
-          ingredients: controller.uiState.ingredients,
+          ingredients: controller.uiState.ingredientsFilter.items,
           addIngredient: controller.addIngredient,
+          removeIngredient: controller.removeIngredient,
           onGoBack: () => controller.navigateTo(0)),
     ];
 

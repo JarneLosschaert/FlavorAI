@@ -17,14 +17,10 @@ class Controller with ChangeNotifier {
       }
       return map;
     });
-    if (uiState.ingredientsFilter.value != '...') {
-      parameter[uiState.ingredientsFilter.filter] =
-          uiState.ingredientsFilter.value;
-    }
     parameter['query'] = uiState.query;
     if (uiState.ingredientsFilter.displayed &&
         uiState.ingredientsFilter.items.isNotEmpty) {
-      parameter['includeIngredients'] =
+      parameter[uiState.ingredientsFilter.filter] =
           uiState.ingredientsFilter.items.join(',');
     }
     parameter['sort'] = uiState.sort;
@@ -75,7 +71,12 @@ class Controller with ChangeNotifier {
   }
 
   void addIngredient(String ingredient) {
-    uiState.ingredients.add(ingredient);
+    uiState.ingredientsFilter.items.add(ingredient);
+    notifyListeners();
+  }
+
+  void removeIngredient(String ingredient) {
+    uiState.ingredientsFilter.items.remove(ingredient);
     notifyListeners();
   }
 
