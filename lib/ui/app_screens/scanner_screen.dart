@@ -13,6 +13,11 @@ import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flavor_ai_testing/logic/service.dart';
 import 'package:flutter/material.dart';
 
+enum RecognitionModel {
+  ocr,
+  objectDetection,
+}
+
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({Key? key, required this.camera}) : super(key: key);
 
@@ -26,6 +31,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
 
+  RecognitionModel _activeRecognitionModel = RecognitionModel.ocr;
   bool _isScanning = false;
   Timer? _scanTimer;
   bool _isProcessing = false;
@@ -91,14 +97,20 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
         final XFile image = await _controller.takePicture();
 
-        final croppedImage = await _cropImage(image);
+        File? croppedImage;
+        switch (_activeRecognitionModel) {
+          case RecognitionModel.ocr:
+            croppedImage = await _cropImage(image);
+            break;
+          case RecognitionModel.objectDetection:
+            croppedImage = File(image.path);
+            break;
 
-        debugPrint(
-            'previewSize: ${_controller.value.previewSize!.width}x${_controller.value.previewSize!.height}');
-        debugPrint('ScannerScreen._takePicture: ${image.path}');
+          // potentionally add more models here
+        }
 
         String responseBody =
-            await Service.instance.fetchProductsFromImage(croppedImage);
+            await Service.instance.fetchProductsFromImage(croppedImage);  // add seperate fetch for object detection
 
         debugPrint('Response from image upload: $responseBody');
 
@@ -198,24 +210,24 @@ class _ScannerScreenState extends State<ScannerScreen> {
                         (_cropRectangleCoords["y"]![1] -
                             _cropRectangleCoords["y"]![0]);
 
-                    debugPrint(
-                        'layoutbuilder controller previewSize: ${_controller.value.previewSize!.width}x${_controller.value.previewSize!.height}');
-                    debugPrint(
-                        'constraints: ${constraints.maxWidth}x${constraints.maxHeight}');
-
-                    return CameraPreview(_controller,
-                        child: Positioned(
-                          left: constraints.maxWidth *
-                              _cropRectangleCoords["x"]![0],
-                          top: constraints.maxHeight *
-                              _cropRectangleCoords["y"]![0],
-                          child: CustomPaint(
-                            painter: RectanglePainter(
-                              rectWidth: rectWidth,
-                              rectHeight: rectHeight,
+                    return Stack(
+                      children: [
+                        CameraPreview(_controller),
+                        if (_activeRecognitionModel == RecognitionModel.ocr)
+                          Positioned(
+                            left: constraints.maxWidth *
+                                _cropRectangleCoords["x"]![0],
+                            top: constraints.maxHeight *
+                                _cropRectangleCoords["y"]![0],
+                            child: CustomPaint(
+                              painter: RectanglePainter(
+                                rectWidth: rectWidth,
+                                rectHeight: rectHeight,
+                              ),
                             ),
                           ),
-                        ));
+                      ],
+                    );
                   },
                 );
               } else {
@@ -230,6 +242,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
             left: 0,
             right: 0,
             child: Center(
+              // found products popup
               child: Column(
                 children: _foundProductsPopup.map((element) {
                   return Text(
@@ -249,8 +262,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
             left: 0,
             right: 0,
             child: Center(
+              // scanner button
               child: IconButton(
-                // scanner button
                 onPressed: _toggleScanning,
                 icon: Icon(
                   _isScanning
@@ -267,8 +280,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
           Positioned(
             bottom: 52,
             right: 16,
+            // found products button
             child: ElevatedButton(
-              // found products button
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
                   lightGreen,
@@ -282,6 +295,61 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   fontSize: 16,
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 28,
+            left: 16,
+            width: 110,
+            // Model switch buttons
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      _activeRecognitionModel == RecognitionModel.ocr
+                          ? lightGreen
+                          : Colors.grey,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _activeRecognitionModel = RecognitionModel.ocr;
+                    });
+                  },
+                  child: const Text(
+                    'Text',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      _activeRecognitionModel ==
+                              RecognitionModel.objectDetection
+                          ? lightGreen
+                          : Colors.grey,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _activeRecognitionModel =
+                          RecognitionModel.objectDetection;
+                    });
+                  },
+                  child: const Text(
+                    'Objects',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
