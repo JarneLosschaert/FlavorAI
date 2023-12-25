@@ -91,9 +91,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
         final XFile image = await _controller.takePicture();
 
-        final croppedImage = await _cropImage(image);  // cropping doesn't completely match the rectangle on the CameraPreview yet
+        final croppedImage = await _cropImage(image);
 
-        debugPrint('previewSize: ${_controller.value.previewSize!.width}x${_controller.value.previewSize!.height}');
+        debugPrint(
+            'previewSize: ${_controller.value.previewSize!.width}x${_controller.value.previewSize!.height}');
         debugPrint('ScannerScreen._takePicture: ${image.path}');
 
         String responseBody =
@@ -105,24 +106,29 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
         if (responseMap.containsKey("products")) {
           List<String> products = List<String>.from(responseMap["products"]);
-          setState(() {
-            for (var p in products) {
-              if (!_foundProducts.contains(p)) {
-                _foundProducts.add(p);
-                _foundProductsPopup.add(p);
+          if (products.isNotEmpty) {
+            setState(() {
+              List<String> foundProductsFromCurrentScan = [];
+              for (var p in products) {
+                if (!_foundProducts.contains(p)) {
+                  _foundProducts.add(p);
+                  _foundProductsPopup.add(p);
+                  foundProductsFromCurrentScan.add(p);
+                }
               }
-            }
-          });
+
+              // Automatically clear the found product name after a delay
+              Future.delayed(const Duration(seconds: 3), () {
+                setState(() {
+                  _foundProductsPopup.removeWhere(
+                      (elem) => foundProductsFromCurrentScan.contains(elem));
+                });
+              });
+            });
+          }
         } else {
           // Handle if the "products" key is missing or the response format is unexpected
         }
-
-        // Automatically clear the found product name after a delay
-        Future.delayed(const Duration(seconds: 3), () {
-          setState(() {
-            _foundProductsPopup = [];
-          });
-        });
       } catch (e) {
         debugPrint(e.toString());
       } finally {
@@ -139,11 +145,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
     double left = _cropRectangleCoords["x"]![0] * rawImage.width;
     double top = _cropRectangleCoords["y"]![0] * rawImage.height;
-    double width = rawImage.width * (_cropRectangleCoords["x"]![1] - _cropRectangleCoords["x"]![0]);
-    double height = rawImage.height * (_cropRectangleCoords["y"]![1] - _cropRectangleCoords["y"]![0]);
+    double width = rawImage.width *
+        (_cropRectangleCoords["x"]![1] - _cropRectangleCoords["x"]![0]);
+    double height = rawImage.height *
+        (_cropRectangleCoords["y"]![1] - _cropRectangleCoords["y"]![0]);
 
     debugPrint('left: $left, top: $top, width: $width, height: $height');
-
 
     final croppedImage = img.copyCrop(
       rawImage,
@@ -167,7 +174,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
     final File croppedImageFile = File(filePath);
     await croppedImageFile.writeAsBytes(croppedBytes);
     return croppedImageFile;
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,11 +191,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
               if (snapshot.connectionState == ConnectionState.done) {
                 return LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    // double rectWidth = 280;
-                    // double rectHeight = 100;
-                  
-                    double rectWidth = constraints.maxWidth * (_cropRectangleCoords["x"]![1] - _cropRectangleCoords["x"]![0]);
-                    double rectHeight = constraints.maxHeight * (_cropRectangleCoords["y"]![1] - _cropRectangleCoords["y"]![0]);
+                    double rectWidth = constraints.maxWidth *
+                        (_cropRectangleCoords["x"]![1] -
+                            _cropRectangleCoords["x"]![0]);
+                    double rectHeight = constraints.maxHeight *
+                        (_cropRectangleCoords["y"]![1] -
+                            _cropRectangleCoords["y"]![0]);
 
                     debugPrint(
                         'layoutbuilder controller previewSize: ${_controller.value.previewSize!.width}x${_controller.value.previewSize!.height}');
@@ -197,10 +205,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
                     return CameraPreview(_controller,
                         child: Positioned(
-                          // left: (constraints.maxWidth - rectWidth) / 2,
-                          // top: (constraints.maxHeight - rectHeight) / 2,
-                          left: constraints.maxWidth * _cropRectangleCoords["x"]![0],
-                          top: constraints.maxHeight * _cropRectangleCoords["y"]![0],
+                          left: constraints.maxWidth *
+                              _cropRectangleCoords["x"]![0],
+                          top: constraints.maxHeight *
+                              _cropRectangleCoords["y"]![0],
                           child: CustomPaint(
                             painter: RectanglePainter(
                               rectWidth: rectWidth,
