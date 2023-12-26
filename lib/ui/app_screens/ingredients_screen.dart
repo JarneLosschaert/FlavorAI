@@ -81,6 +81,14 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
             children: [
               for (String ingredient in widget.ingredients)
                 _buildIngredient(ingredient),
+              if (widget.ingredients.isEmpty)
+                Text(
+                  "You haven't added any ingredients yet.",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: tertiaryTextColor,
+                  ),
+                ),
             ],
           ),
           Container(height: 20),
