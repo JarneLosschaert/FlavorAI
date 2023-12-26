@@ -8,6 +8,7 @@ import 'package:image/image.dart' as img;
 
 import 'package:path_provider/path_provider.dart';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:camera/camera.dart';
 import 'package:flavor_ai_testing/constants/colors.dart';
 import 'package:flavor_ai_testing/logic/service.dart';
@@ -19,8 +20,13 @@ enum RecognitionModel {
 }
 
 class ScannerScreen extends StatefulWidget {
-  const ScannerScreen({Key? key, required this.camera}) : super(key: key);
+  const ScannerScreen({
+    super.key,
+    required this.onGoBack,
+    required this.camera
+  });
 
+  final Function() onGoBack;
   final CameraDescription camera;
 
   @override
@@ -42,9 +48,15 @@ class _ScannerScreenState extends State<ScannerScreen> {
     "y": [0.4, 0.55],
   };
 
+  bool interceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    widget.onGoBack.call();
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
+    BackButtonInterceptor.add(interceptor);
 
     _controller = CameraController(
       widget.camera,
@@ -57,6 +69,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   @override
   void dispose() {
+    BackButtonInterceptor.remove(interceptor);
+
     _stopScanning();
     _initializeControllerFuture.then((_) => _controller.dispose());
     super.dispose();

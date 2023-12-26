@@ -9,6 +9,8 @@ Color grey = const Color(0xFFE5E5E5);
 Color darkGrey = const Color(0xFF787878);
 Color black = const Color(0xFF000000);
 
+Color red = const Color(0xFFFF3333);
+
 Color primaryColor = green;
 Color secondaryColor = lightGreen;
 Color tertiaryColor = darkGreen;
@@ -20,3 +22,5 @@ Color secondaryBackgroundColor = darkGrey;
 Color primaryTextColor = black;
 Color secondaryTextColor = darkGrey;
 Color tertiaryTextColor = white;
+
+Color errorColor = red;

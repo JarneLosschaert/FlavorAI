@@ -71,3 +71,15 @@ List<String> types = [
   'Snack',
   'Drink',
 ];
+
+List<String> sortItems = [
+  'popularity',
+  'random',
+  'healthiness',
+  'price',
+  'time',
+  'calories',
+  'carbs',
+  'protein',
+  'fat',
+];

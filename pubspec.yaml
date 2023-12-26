@@ -44,6 +44,7 @@ dependencies:
   webview_flutter: ^4.4.1
   riverpod: ^0.14.0
   provider: ^5.0.0
+  back_button_interceptor: ^7.0.0
 
 dev_dependencies:
   flutter_test:
@@ -67,9 +68,13 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/flavorAI.svg
     - assets/images/background-recipe.jpg
-    - assets/logo/logo.png
+    - assets/images/flavorAI.svg
+    - assets/images/fridge_icon.png
+    - assets/images/ingredients.webp
+    - assets/images/recipes.jpg
+    - assets/images/fridge.jpg
+    - assets/images/scan.png
 
 
   # To add assets to your application, add an assets section, like this:

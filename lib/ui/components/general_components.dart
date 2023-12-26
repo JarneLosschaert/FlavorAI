@@ -22,6 +22,7 @@ class BasicTitle extends StatelessWidget {
         children: [
           if (withGoBack)
             Expanded(
+                flex: 1,
                 child: GestureDetector(
                   onTap: () {
                     onGoBack?.call();
@@ -44,8 +45,9 @@ class BasicTitle extends StatelessWidget {
                   ),
                 ))
           else
-            Expanded(child: Container()),
+            Expanded(flex: 1, child: Container()),
           Expanded(
+              flex: 3,
               child: Text(
                 text,
                 textAlign: TextAlign.center,
@@ -54,7 +56,7 @@ class BasicTitle extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               )),
-          Expanded(child: Container()),
+          Expanded(flex: 1,child: Container(),),
         ],
       ),
     );
@@ -90,20 +92,22 @@ class GeneralDropdown extends StatelessWidget {
     required this.items,
     required this.onChange,
     required this.selectedValue,
-    required this.label,
+    this.label = '',
+    this.withLabel = true,
   }) : super(key: key);
 
   final List<String> items;
   final void Function(String?) onChange;
   final String selectedValue;
   final String label;
+  final bool withLabel;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Subtitle(text: label),
+        if (withLabel) Subtitle(text: label),
         Container(
           height: 30,
           padding: const EdgeInsets.only(left: 10, right: 10),

@@ -4,7 +4,11 @@ class FilterState {
   String value = '...';
   List<String> items = [];
 
-  FilterState(this.filter, this.items){
-    items = ['...'] + items;
+  FilterState(this.filter, this.items) {
+    if (filter == 'includeIngredients') {
+      displayed = true;
+    } else {
+      items = ['...'] + items;
+    }
   }
 }
