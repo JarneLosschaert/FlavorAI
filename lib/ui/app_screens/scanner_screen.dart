@@ -20,14 +20,15 @@ enum RecognitionModel {
 }
 
 class ScannerScreen extends StatefulWidget {
-  const ScannerScreen({
-    super.key,
-    required this.onGoBack,
-    required this.camera
-  });
+  const ScannerScreen(
+      {super.key,
+      required this.onGoBack,
+      required this.camera,
+      required this.addIngredient});
 
   final Function() onGoBack;
   final CameraDescription camera;
+  final Function(String) addIngredient;
 
   @override
   State<ScannerScreen> createState() => _ScannerScreenState();
@@ -123,8 +124,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
           // potentionally add more models here
         }
 
-        String responseBody =
-            await Service.instance.fetchProductsFromImage(croppedImage);  // add seperate fetch for object detection
+        String responseBody = await Service.instance.fetchProductsFromImage(
+            croppedImage); // add seperate fetch for object detection
 
         debugPrint('Response from image upload: $responseBody');
 
@@ -140,6 +141,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   _foundProducts.add(p);
                   _foundProductsPopup.add(p);
                   foundProductsFromCurrentScan.add(p);
+                  widget.addIngredient(p);
                 }
               }
 
@@ -224,23 +226,22 @@ class _ScannerScreenState extends State<ScannerScreen> {
                         (_cropRectangleCoords["y"]![1] -
                             _cropRectangleCoords["y"]![0]);
 
-                    return Stack(
-                      children: [
-                        CameraPreview(_controller),
-                        if (_activeRecognitionModel == RecognitionModel.ocr)
-                          Positioned(
-                            left: constraints.maxWidth *
-                                _cropRectangleCoords["x"]![0],
-                            top: constraints.maxHeight *
-                                _cropRectangleCoords["y"]![0],
-                            child: CustomPaint(
-                              painter: RectanglePainter(
-                                rectWidth: rectWidth,
-                                rectHeight: rectHeight,
+                    return CameraPreview(
+                      _controller,
+                      child: _activeRecognitionModel == RecognitionModel.ocr
+                          ? Positioned(
+                              left: constraints.maxWidth *
+                                  _cropRectangleCoords["x"]![0],
+                              top: constraints.maxHeight *
+                                  _cropRectangleCoords["y"]![0],
+                              child: CustomPaint(
+                                painter: RectanglePainter(
+                                  rectWidth: rectWidth,
+                                  rectHeight: rectHeight,
+                                ),
                               ),
-                            ),
-                          ),
-                      ],
+                            )
+                          : null,
                     );
                   },
                 );
