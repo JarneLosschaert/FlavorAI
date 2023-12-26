@@ -44,8 +44,10 @@ class _AppScreensState extends State<AppScreens> {
       ),
       _camera != null
           ? ScannerScreen(
-              onGoBack: () => controller.navigateTo(0), camera: _camera!,
-          addIngredient: controller.addIngredient)
+            camera: _camera!,
+              onGoBack: () => controller.navigateTo(0), 
+              onItemsPressed: () => controller.navigateTo(5),
+              addIngredient: controller.addIngredient)
           : Container(),
       SettingsScreen(
         onGoBack: () => controller.navigateTo(0),

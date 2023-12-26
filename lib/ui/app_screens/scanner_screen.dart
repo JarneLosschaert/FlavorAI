@@ -24,11 +24,13 @@ class ScannerScreen extends StatefulWidget {
       {super.key,
       required this.onGoBack,
       required this.camera,
-      required this.addIngredient});
+      required this.addIngredient,
+      required this.onItemsPressed});
 
   final Function() onGoBack;
   final CameraDescription camera;
   final Function(String) addIngredient;
+  final Function() onItemsPressed;
 
   @override
   State<ScannerScreen> createState() => _ScannerScreenState();
@@ -302,7 +304,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   lightGreen,
                 ),
               ),
-              onPressed: () {}, // Add functionality here
+              onPressed: () {
+                widget.onItemsPressed.call();
+              },
               child: Text(
                 'Items (${_foundProducts.length})',
                 style: const TextStyle(
