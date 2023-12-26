@@ -71,8 +71,10 @@ class Controller with ChangeNotifier {
   }
 
   void addIngredient(String ingredient) {
-    uiState.ingredientsFilter.items.add(ingredient);
-    notifyListeners();
+    if (!uiState.ingredientsFilter.items.contains(ingredient)) {
+      uiState.ingredientsFilter.items.add(ingredient);
+      notifyListeners();
+    }
   }
 
   void removeIngredient(String ingredient) {
